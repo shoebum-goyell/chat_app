@@ -1,19 +1,20 @@
-import 'package:chat_app/signup_screen.dart';
+import 'package:chat_app/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 
-class LoginScreen extends StatefulWidget {
+class SignUpScreen extends StatefulWidget {
 
-  const LoginScreen({Key? key}) : super(key: key);
+  const SignUpScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   var emailId = "";
   var password = "";
+  bool isPass = false;
   bool isEnabled = false;
 
   @override
@@ -23,7 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
       appBar: AppBar(
         backgroundColor: const Color(0xffC7B198),
         title: const Text(
-          "Login Screen",
+          "SignUp Screen",
           style: TextStyle(color: Color(0xff596E79)),
         ),
         centerTitle: true,
@@ -50,13 +51,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     onChanged: (text) {
                       setState(() {
-                        if(text.isNotEmpty){
-                          isEnabled = true;
-                        }
-                        else{
-                          isEnabled = false;
-                        }
                         emailId = text;
+                        enableButton();
                       });
                     }),
               ),
@@ -68,13 +64,20 @@ class _LoginScreenState extends State<LoginScreen> {
                     border: Border.all(width: 1, color: Colors.black),
                     color: const Color(0xffC7B198)),
                 child: TextField(
-                  obscureText: true,
+                    obscureText: true,
                     decoration: const InputDecoration.collapsed(
                         hintText: "Password",
                         hintStyle: TextStyle(color: Color(0xff596E79))),
                     onChanged: (text) {
                       setState(() {
                         password = text;
+                        if(password.length < 6){
+                          isPass = false;
+                        }
+                        else{
+                          isPass = true;
+                        }
+                        enableButton();
                       });
                     }),
               ),
@@ -83,30 +86,30 @@ class _LoginScreenState extends State<LoginScreen> {
                       backgroundColor:
                       MaterialStateProperty.all(Color(0xffC7B198))),
                   onPressed: () {
-                   logIn();
+                    signUp();
                   },
                   child: Container(
                       child: const Text(
-                        "Login",
+                        "Create",
                         style: TextStyle(color: Color(0xff596E79)),
                       ))),
               SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Don't have an account? ", style: TextStyle(color: Colors.white)),
+                  Text("Already have an account? ", style: TextStyle(color: Colors.white)),
                   GestureDetector(
                       onTap: () {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => SignUpScreen()),
+                              builder: (context) => LoginScreen()),
                         );
                       },
-                          child: const Text(
-                            "Sign Up",
-                            style: TextStyle(color: Color(0xffC7B198)),
-                          )),
+                      child: const Text(
+                        "Log in",
+                        style: TextStyle(color: Color(0xffC7B198)),
+                      )),
                 ],
               ),
             ],
@@ -115,15 +118,31 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-  Future logIn() async{
-    try{
-      await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailId.trim(), password: password.trim());
-      print("logged in");
+  Future signUp() async{
+    if(isEnabled){
+      try{
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(email: emailId.trim(), password: password.trim());
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text("You've signed up")));
+      }
+      catch(e){
+        print(e.toString());
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text("Couldn't create a new user")));
+      }
     }
-    catch(e){
-      print(e.toString());
+    else{
       ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Incorrect Email id or Password')));
+          .showSnackBar(SnackBar(content: !isPass? Text("Password must be longer than 6 letters") : Text("Email id cannot be empty")));
+    }
+  }
+
+  void enableButton(){
+    if(!isPass || emailId.isEmpty){
+      isEnabled = false;
+    }
+    else{
+      isEnabled = true;
     }
   }
 }
