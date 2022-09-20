@@ -1,4 +1,6 @@
 import 'package:chat_app/login_screen.dart';
+import 'package:chat_app/models.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -14,6 +16,7 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   var emailId = "";
   var password = "";
+  var username = "";
   bool isPass = false;
   bool isEnabled = false;
 
@@ -22,6 +25,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Scaffold(
       backgroundColor: const Color(0xff596E79),
       appBar: AppBar(
+        automaticallyImplyLeading:false,
         backgroundColor: const Color(0xffC7B198),
         title: const Text(
           "SignUp Screen",
@@ -81,6 +85,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       });
                     }),
               ),
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    border: Border.all(width: 1, color: Colors.black),
+                    color: const Color(0xffC7B198)),
+                child: TextField(
+                    decoration: const InputDecoration.collapsed(
+                        hintText: "Username",
+                        hintStyle: TextStyle(color: Color(0xff596E79))),
+                    onChanged: (text) {
+                      setState(() {
+                        username = text;
+                        enableButton();
+                      });
+                    }),
+              ),
               ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor:
@@ -100,11 +122,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   Text("Already have an account? ", style: TextStyle(color: Colors.white)),
                   GestureDetector(
                       onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => LoginScreen()),
-                        );
+                        Navigator.pop(context);
                       },
                       child: const Text(
                         "Log in",
@@ -122,8 +140,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if(isEnabled){
       try{
         await FirebaseAuth.instance.createUserWithEmailAndPassword(email: emailId.trim(), password: password.trim());
+        final chatsDocu = FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid);
+        final user = UserObj(
+            uid: FirebaseAuth.instance.currentUser!.uid, username: username, groups: []);
+        final json = user.toJson();
+        await chatsDocu.set(json);
         ScaffoldMessenger.of(context)
             .showSnackBar(const SnackBar(content: Text("You've signed up")));
+        Navigator.pop(context);
       }
       catch(e){
         print(e.toString());
@@ -133,12 +157,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
     else{
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: !isPass? Text("Password must be longer than 6 letters") : Text("Email id cannot be empty")));
+          .showSnackBar(SnackBar(content: !isPass? Text("Password must be longer than 6 letters") : emailId.trim().isEmpty? Text("Email id cannot be empty") : Text("Username cannot be empty")));
     }
   }
 
   void enableButton(){
-    if(!isPass || emailId.isEmpty){
+    if(!isPass || emailId.trim().isEmpty || username.trim().isEmpty){
       isEnabled = false;
     }
     else{
