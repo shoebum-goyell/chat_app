@@ -22,11 +22,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:  StreamBuilder<User?>(
+      home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if(snapshot.hasData){
-            return LoginScreen();
+            return ChatScreen(uid: FirebaseAuth.instance.currentUser!.uid,);
           }
           else{
             return LoginScreen();
