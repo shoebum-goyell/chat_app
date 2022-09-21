@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({this.uid, Key? key}) : super(key: key);
+  const ChatScreen({this.uid,this.gid, Key? key}) : super(key: key);
 
   final String? uid;
+  final String? gid;
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -15,6 +16,7 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final textController = TextEditingController();
   var username = "";
+  List<Widget> lis = [];
 
   @override
   void initState() {
@@ -26,18 +28,21 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Stack(
+      body: Stack(
           children: [
             StreamBuilder<List<Message>>(
               stream: readChats(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   final texts = snapshot.data!;
-                  return ListView(
-                    children: buildTexts(texts),
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 150.0),
+                    child: ListView(
+                      children: buildTexts(texts),
+                    ),
                   );
                 } else {
+                  print("hello");
                   return Text("");
                 }
               },
@@ -95,42 +100,19 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
               ),
             ),
-            Padding(
-              padding:
-              const EdgeInsets.symmetric(vertical: 80.0, horizontal: 20.0),
-              child: Align(
-                alignment: Alignment.bottomLeft,
-                child: ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                        MaterialStateProperty.all(Color(0xffC7B198))),
-                    onPressed: () {
-                      _signOut();
-                    },
-                    child: Container(
-                        child: const Text(
-                          "Sign Out",
-                          style: TextStyle(color: Color(0xff596E79)),
-                        ))),
-              ),
-            ),
           ],
         ),
-      ),
     );
   }
 
   createMessage({required String text, required String uid}) async {
     final chatsDocu = FirebaseFirestore.instance.collection('chats').doc();
     final message = Message(
-        id: chatsDocu.id, senderId: uid, text: text, timestamp: DateTime.now(), username: username, groupId: "");
+        id: chatsDocu.id, senderId: uid, text: text, timestamp: DateTime.now(), username: username, groupId: widget.gid!);
     final json = message.toJson();
     await chatsDocu.set(json);
   }
 
-  Future<void> _signOut() async {
-    await FirebaseAuth.instance.signOut();
-  }
 
   List<Widget> buildTexts(List<Message> texts) {
     List<Widget> lis = [];
@@ -148,6 +130,7 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       ));
     }
+
     return lis;
   }
 
@@ -161,8 +144,13 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Stream<List<Message>> readChats() => FirebaseFirestore.instance
       .collection('chats')
-      .orderBy('timestamp')
+      .where("groupId", isEqualTo: widget.gid)
       .snapshots()
-      .map((snapshot) =>
-          snapshot.docs.map((doc) => Message.fromJson(doc.data())).toList());
+      .map((snapshot) {
+          var a = snapshot.docs.map((doc) => Message.fromJson(doc.data())).toList();
+          a.sort((a, b) {
+                return a.timestamp.compareTo(b.timestamp);
+              });
+         return a;
+      });
 }

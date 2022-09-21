@@ -37,22 +37,42 @@ class Message {
 class UserObj {
   String uid;
   final String username;
-  final List<String> groups;
 
   UserObj({
     this.uid = '',
     required this.username,
-    required this.groups,
   });
 
   Map<String, dynamic> toJson() => {
         'uid': uid,
         'username': username,
-        'groups': groups,
       };
 
   static UserObj fromJson(Map<String, dynamic> json) => UserObj(
       uid: json['uid'],
-      username: json['username'],
-      groups: json['groups']);
+      username: json['username']); //won't work because of some issue, converting to list needs to be done
+}
+
+class Group {
+  String id;
+  final String groupName;
+  final List<String> users;
+
+  Group({
+    this.id = '',
+    required this.groupName,
+    required this.users
+  });
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'groupName': groupName,
+    'users' : users
+  };
+
+  static Group fromJson(Map<String, dynamic> json) => Group(
+      id: json['id'],
+      groupName: json['groupName'],
+      users: List<String>.from(json['users'])
+  );
 }

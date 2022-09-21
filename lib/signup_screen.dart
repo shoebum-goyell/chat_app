@@ -142,7 +142,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(email: emailId.trim(), password: password.trim());
         final chatsDocu = FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid);
         final user = UserObj(
-            uid: FirebaseAuth.instance.currentUser!.uid, username: username, groups: []);
+            uid: FirebaseAuth.instance.currentUser!.uid, username: username);
         final json = user.toJson();
         await chatsDocu.set(json);
         ScaffoldMessenger.of(context)
