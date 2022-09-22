@@ -1,3 +1,4 @@
+import 'package:chat_app/colors.dart';
 import 'package:chat_app/login_screen.dart';
 import 'package:chat_app/models.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -26,7 +27,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       backgroundColor: const Color(0xff596E79),
       appBar: AppBar(
         automaticallyImplyLeading:false,
-        backgroundColor: const Color(0xffC7B198),
+        backgroundColor: kColorAppBar,
         title: const Text(
           "SignUp Screen",
           style: TextStyle(color: Color(0xff596E79)),
