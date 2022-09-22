@@ -1,13 +1,15 @@
+import 'package:chat_app/colors.dart';
 import 'package:chat_app/models.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({this.uid,this.gid, Key? key}) : super(key: key);
+  const ChatScreen({this.uid,this.gid, this.groupName,Key? key}) : super(key: key);
 
   final String? uid;
   final String? gid;
+  final String? groupName;
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -27,81 +29,89 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.groupName!, style: TextStyle(color: kColorAppBarFont),),
+        backgroundColor: kColorDark,
+      ),
       backgroundColor: Colors.white,
-      body: Stack(
-          children: [
-            StreamBuilder<List<Message>>(
-              stream: readChats(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  final texts = snapshot.data!;
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 150.0),
-                    child: ListView(
-                      children: buildTexts(texts),
-                    ),
-                  );
-                } else {
-                  print("hello");
-                  return Text("");
-                }
-              },
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Container(
-                        margin: const EdgeInsets.symmetric(vertical: 10),
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 15, horizontal: 10),
-                        decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10)),
-                            border: Border.all(width: 1, color: Colors.black),
-                            color: const Color(0xffF0ECE2)),
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width - 125,
-                          child: TextField(
-                            keyboardType: TextInputType.emailAddress,
-                            controller: textController,
-                            decoration: const InputDecoration.collapsed(
-                              hintText: "Type here",
-                              hintStyle: TextStyle(color: Color(0xff596E79)),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 20.0),
+        child: Stack(
+            children: [
+              StreamBuilder<List<Message>>(
+                stream: readChats(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    final texts = snapshot.data!;
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 150.0),
+                      child: ListView(
+                        children: buildTexts(texts),
+                      ),
+                    );
+                  } else {
+                    print("hello");
+                    return Text("");
+                  }
+                },
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 40.0, horizontal: 10.0),
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                          margin: const EdgeInsets.symmetric(vertical: 10),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 10),
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10)),
+                              border: Border.all(width: 1, color: Colors.black),
+                              color: kColorTextField),
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width - 125,
+                            child: TextField(
+                              keyboardType: TextInputType.emailAddress,
+                              controller: textController,
+                              decoration: const InputDecoration.collapsed(
+                                hintText: "Type here",
+                                hintStyle: TextStyle(color: Color(0xff596E79)),
+                              ),
                             ),
+                          )),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: kColorDark, shape: CircleBorder(),
+                            padding: EdgeInsets.all(15)
                           ),
-                        )),
-                    ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Color(0xffC7B198))),
-                        onPressed: () {
-                          if (textController.text.trim().isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text("Message can't be empty")));
-                          } else {
-                            createMessage(
-                                text: textController.text, uid: widget.uid!);
-                            textController.clear();
-                          }
-                        },
-                        child: Container(
-                          child: const Icon(
-                            Icons.send,
-                            color: Color(0xff596E79),
-                          ),
-                        )),
-                  ],
+                          onPressed: () {
+                            if (textController.text.trim().isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text("Message can't be empty")));
+                            } else {
+                              createMessage(
+                                  text: textController.text, uid: widget.uid!);
+                              textController.clear();
+                            }
+                          },
+                          child: Container(
+                            child: const Icon(
+                              Icons.send,
+                              color: Colors.white,
+                            ),
+                          )),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
+      ),
     );
   }
 
@@ -124,8 +134,16 @@ class _ChatScreenState extends State<ChatScreen> {
               ? MainAxisAlignment.end
               : MainAxisAlignment.start,
           children: [
-            Text(texts[i].senderId == widget.uid? "you: ": texts[i].username + " : "),
-            Text(texts[i].text),
+            Container(
+              decoration: BoxDecoration(
+                color: texts[i].senderId == widget.uid? kTextBubbleColor : kColorDark,
+                borderRadius: BorderRadius.all(Radius.circular(10))
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Text(texts[i].senderId == widget.uid? "you: " + texts[i].text : texts[i].username + " : "  + texts[i].text, style: TextStyle(color: Colors.white),),
+              ),
+            ),
           ],
         ),
       ));

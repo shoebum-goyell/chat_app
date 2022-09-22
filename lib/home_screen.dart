@@ -1,4 +1,5 @@
 import 'package:chat_app/chat_screen.dart';
+import 'package:chat_app/colors.dart';
 import 'package:chat_app/create_group_screen.dart';
 import 'package:chat_app/models.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -19,24 +20,16 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: kColorDark,
           title: Text("Your Chats"),
           actions: [
-            ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor:
-                    MaterialStateProperty.all(Colors.blue)),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => CreateGroupScreen()),
-                  );
-                },
-                child: Container(
-                    child: const Text(
-                      "Create Group",
-                      style: TextStyle(color: Colors.white),
-                    ))),
+            IconButton(onPressed: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CreateGroupScreen()),
+              );
+            }, icon: Icon(Icons.add, color: kBackgroundColor,))
           ],
         ),
         body: Stack(
@@ -67,14 +60,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: ElevatedButton(
                     style: ButtonStyle(
                         backgroundColor:
-                        MaterialStateProperty.all(Color(0xffC7B198))),
+                        MaterialStateProperty.all(kColorDark)),
                     onPressed: () {
                       _signOut();
                     },
                     child: Container(
                         child: const Text(
                           "Sign Out",
-                          style: TextStyle(color: Color(0xff596E79)),
+                          style: TextStyle(color: kColorAppBarFont),
                         ))),
               ),
             ),
@@ -83,27 +76,24 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  List<Widget> buildGroups(List<Group> texts) {
-    List<Widget> lis = [Divider(
-        color: Colors.black
-    )];
-    for (int i = 0; i < texts.length; i++) {
-      lis.add(Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-        child:
-            GestureDetector(child: Row(
-              children: [
-                Text(texts[i].groupName),
-              ],
+  List<Widget> buildGroups(List<Group> groups) {
+    List<Widget> lis = [];
+    for (int i = 0; i < groups.length; i++) {
+      lis.add(
+            GestureDetector(child: Container(
+               child: Padding(
+                 padding: i > 0 ? const EdgeInsets.symmetric(horizontal: 10, vertical: 20) : const EdgeInsets.fromLTRB(10,30,10,20),
+                 child: Text(groups[i].groupName),
+               ),
             ),
               onTap:() {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ChatScreen(uid: widget.uid, gid: texts[i].id,)),
+                      builder: (context) => ChatScreen(uid: widget.uid, gid: groups[i].id, groupName: groups[i].groupName,)),
                 );},
         ),
-      ));
+      );
       lis.add(Divider(
           color: Colors.black
       ));
