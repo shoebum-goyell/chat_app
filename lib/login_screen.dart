@@ -1,6 +1,8 @@
+import 'package:chat_app/colors.dart';
 import 'package:chat_app/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 
 class LoginScreen extends StatefulWidget {
@@ -19,13 +21,13 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff596E79),
+      backgroundColor: kBackgroundColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: const Color(0xffC7B198),
+        backgroundColor: kColorDark,
         title: const Text(
           "Login Screen",
-          style: TextStyle(color: Color(0xff596E79)),
+          style: TextStyle(color: kColorAppBarFont),
         ),
         centerTitle: true,
       ),
@@ -42,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 decoration: BoxDecoration(
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
                     border: Border.all(width: 1, color: Colors.black),
-                    color: const Color(0xffC7B198)),
+                    color: kColorTextField),
                 child: TextField(
                     keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration.collapsed(
@@ -67,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 decoration: BoxDecoration(
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
                     border: Border.all(width: 1, color: Colors.black),
-                    color: const Color(0xffC7B198)),
+                    color: kColorTextField),
                 child: TextField(
                   obscureText: true,
                     decoration: const InputDecoration.collapsed(
@@ -82,20 +84,20 @@ class _LoginScreenState extends State<LoginScreen> {
               ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor:
-                      MaterialStateProperty.all(Color(0xffC7B198))),
+                      MaterialStateProperty.all(kColorDark)),
                   onPressed: () {
                    logIn();
                   },
                   child: Container(
                       child: const Text(
                         "Login",
-                        style: TextStyle(color: Color(0xff596E79)),
+                        style: TextStyle(color: kColorAppBarFont),
                       ))),
               SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Don't have an account? ", style: TextStyle(color: Colors.white)),
+                  Text("Don't have an account? ", style: TextStyle(color: kColorDark)),
                   GestureDetector(
                       onTap: () {
                         Navigator.push(

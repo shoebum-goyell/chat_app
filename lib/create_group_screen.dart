@@ -1,3 +1,4 @@
+import 'package:chat_app/colors.dart';
 import 'package:chat_app/login_screen.dart';
 import 'package:chat_app/models.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -21,12 +22,12 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff596E79),
+      backgroundColor: kBackgroundColor,
       appBar: AppBar(
-        backgroundColor: const Color(0xffC7B198),
+        backgroundColor: kColorDark,
         title: const Text(
           "Create Group",
-          style: TextStyle(color: Color(0xff596E79)),
+          style: TextStyle(color: kColorAppBarFont),
         ),
         centerTitle: true,
       ),
@@ -43,7 +44,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                     print('ok');
                     final users = snapshot.data!;
                     return Padding(
-                      padding: const EdgeInsets.only(top:100.0),
+                      padding: const EdgeInsets.only(top:140.0),
                       child: Container(
                         height: 300,
                         child: ListView(
@@ -56,42 +57,45 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                   }
                 },
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 10),
-                    padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-                    decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.all(Radius.circular(10)),
-                        border: Border.all(width: 1, color: Colors.black),
-                        color: const Color(0xffC7B198)),
-                    child: TextField(
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: const InputDecoration.collapsed(
-                          hintText: "Group name",
-                          hintStyle: TextStyle(color: Color(0xff596E79)),
-                        ),
-                        onChanged: (text) {
-                          setState(() {
-                            group_name = text;
-                          });
-                        }),
-                  ),
-                  ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor:
-                          MaterialStateProperty.all(Color(0xffC7B198))),
-                      onPressed: () {
-                        createGroup();
-                      },
-                      child: Container(
-                          child: const Text(
-                            "Create",
-                            style: TextStyle(color: Color(0xff596E79)),
-                          ))),
-                  SizedBox(height: 10),
-                ],
+              Padding(
+                padding: const EdgeInsets.only(top: 50.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                      decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.all(Radius.circular(10)),
+                          border: Border.all(width: 1, color: Colors.black),
+                          color: kColorTextField),
+                      child: TextField(
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: const InputDecoration.collapsed(
+                            hintText: "Group name",
+                            hintStyle: TextStyle(color: Color(0xff596E79)),
+                          ),
+                          onChanged: (text) {
+                            setState(() {
+                              group_name = text;
+                            });
+                          }),
+                    ),
+                    ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                            MaterialStateProperty.all(kColorDark)),
+                        onPressed: () {
+                          createGroup();
+                        },
+                        child: Container(
+                            child: const Text(
+                              "Create",
+                              style: TextStyle(color: kColorAppBarFont),
+                            ))),
+                    SizedBox(height: 10),
+                  ],
+                ),
               ),
             ],
           ),
@@ -115,9 +119,9 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
     List<Widget> lis = [];
     for (int i = 0; i < users.length; i++) {
       bool_users.add(false);
-      lis.add(Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: CheckboxListTile(
+      lis.add(CheckboxListTile(
+          activeColor: kColorDark,
+          contentPadding: EdgeInsets.zero,
           title: Text(users[i].username),
           value: bool_users[i],
           onChanged: (bool? value){
@@ -131,8 +135,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
               }
             });
           },
-        )
-      ));
+        ));
     }
     return lis;
   }

@@ -24,13 +24,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff596E79),
+      backgroundColor: kBackgroundColor,
       appBar: AppBar(
         automaticallyImplyLeading:false,
-        backgroundColor: kColorAppBar,
+        backgroundColor: kColorDark,
         title: const Text(
           "SignUp Screen",
-          style: TextStyle(color: Color(0xff596E79)),
+          style: TextStyle(color: kColorAppBarFont),
         ),
         centerTitle: true,
       ),
@@ -47,7 +47,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 decoration: BoxDecoration(
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
                     border: Border.all(width: 1, color: Colors.black),
-                    color: const Color(0xffC7B198)),
+                    color: kColorTextField),
                 child: TextField(
                     keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration.collapsed(
@@ -67,7 +67,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 decoration: BoxDecoration(
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
                     border: Border.all(width: 1, color: Colors.black),
-                    color: const Color(0xffC7B198)),
+                    color: kColorTextField),
                 child: TextField(
                     obscureText: true,
                     decoration: const InputDecoration.collapsed(
@@ -92,7 +92,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 decoration: BoxDecoration(
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
                     border: Border.all(width: 1, color: Colors.black),
-                    color: const Color(0xffC7B198)),
+                    color: kColorTextField),
                 child: TextField(
                     decoration: const InputDecoration.collapsed(
                         hintText: "Username",
@@ -107,20 +107,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor:
-                      MaterialStateProperty.all(Color(0xffC7B198))),
+                      MaterialStateProperty.all(kColorDark)),
                   onPressed: () {
                     signUp();
                   },
                   child: Container(
                       child: const Text(
                         "Create",
-                        style: TextStyle(color: Color(0xff596E79)),
+                        style: TextStyle(color: kColorAppBarFont),
                       ))),
               SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Already have an account? ", style: TextStyle(color: Colors.white)),
+                  Text("Already have an account? ", style: TextStyle(color: kColorDark)),
                   GestureDetector(
                       onTap: () {
                         Navigator.pop(context);
