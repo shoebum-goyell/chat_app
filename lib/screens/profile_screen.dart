@@ -1,4 +1,4 @@
-import 'package:chat_app/colors.dart';
+import 'package:chat_app/resources/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +28,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         backgroundColor: kColorDark,
         title: Text("Profile"),
       ),
-      backgroundColor: kBackgroundColor,
+      backgroundColor: kThemeColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -57,7 +57,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Container(
                         child: const Text(
                           "Sign Out",
-                          style: TextStyle(color: kColorAppBarFont),
+                          style: TextStyle(color: kColorLight),
                         ))),
               ),
             ),
