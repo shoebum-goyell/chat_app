@@ -1,9 +1,8 @@
-import 'package:chat_app/colors.dart';
-import 'package:chat_app/group_details_screen.dart';
-import 'package:chat_app/models.dart';
+import 'package:chat_app/resources/colors.dart';
+import 'package:chat_app/screens/group_details_screen.dart';
+import 'package:chat_app/models/message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -35,7 +34,7 @@ class _ChatScreenState extends State<ChatScreen> {
       appBar: AppBar(
         title: Text(
           widget.groupName!,
-          style: TextStyle(color: kColorAppBarFont),
+          style: TextStyle(color: kColorLight),
         ),
         backgroundColor: kColorDark,
         actions: [
@@ -183,7 +182,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       Container(
                         child: texts[i].senderId != widget.uid ? Text(texts[i].username,
                             style: GoogleFonts.lexendDeca(
-                                textStyle: TextStyle(color: kColorAppBarFont))): Container(),
+                                textStyle: TextStyle(color: kColorLight))): Container(),
                       ),
                       texts[i].text.length > 40
                           ? Container(
@@ -191,7 +190,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               child: Text(texts[i].text,
                                   style: GoogleFonts.lexendDeca(
                                       textStyle:
-                                          TextStyle(color: kColorAppBarFont, fontSize: 16))),
+                                          TextStyle(color: kColorLight, fontSize: 16))),
                             )
                           : texts[i].text.length < 15
                               ? Container(
@@ -199,13 +198,13 @@ class _ChatScreenState extends State<ChatScreen> {
                                   child: Text(texts[i].text,
                                       style: GoogleFonts.lexendDeca(
                                           textStyle: TextStyle(
-                                              color: kColorAppBarFont, fontSize: 16))),
+                                              color: kColorLight, fontSize: 16))),
                                 )
                               : Container(
                                   child: Text(texts[i].text,
                                       style: GoogleFonts.lexendDeca(
                                           textStyle: TextStyle(
-                                              color: kColorAppBarFont, fontSize: 16))),
+                                              color: kColorLight, fontSize: 16))),
                                 ),
                     ],
                   )),

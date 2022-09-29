@@ -1,9 +1,8 @@
-import 'package:chat_app/colors.dart';
-import 'package:chat_app/login_screen.dart';
-import 'package:chat_app/models.dart';
+import 'package:chat_app/resources/colors.dart';
+import 'package:chat_app/models/user_obj.dart';
+import 'package:chat_app/models/group.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 
 class CreateGroupScreen extends StatefulWidget {
@@ -31,12 +30,12 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kBackgroundColor,
+      backgroundColor: kThemeColor,
       appBar: AppBar(
         backgroundColor: kColorDark,
         title: const Text(
           "Create Group",
-          style: TextStyle(color: kColorAppBarFont),
+          style: TextStyle(color: kColorLight),
         ),
         centerTitle: true,
       ),
@@ -116,7 +115,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                         child: Container(
                             child: const Text(
                               "Create",
-                              style: TextStyle(color: kColorAppBarFont),
+                              style: TextStyle(color: kColorLight),
                             ))) : SizedBox(height: 25, width: 25, child: CircularProgressIndicator(color: kColorDark, strokeWidth: 2,)),
                   ),
                 ),
@@ -163,7 +162,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
               title: RichText(
                 text: TextSpan(
                   text: users[i].username,
-                  style: TextStyle(color: kColorAppBarFont),
+                  style: TextStyle(color: kColorLight),
                   children: [
                     TextSpan(text: "#" + users[i].uid.substring(1,5), style: TextStyle(color: Colors.grey))
                   ]

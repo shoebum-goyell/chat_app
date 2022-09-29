@@ -1,10 +1,9 @@
-import 'package:chat_app/chat_screen.dart';
-import 'package:chat_app/colors.dart';
-import 'package:chat_app/create_group_screen.dart';
-import 'package:chat_app/models.dart';
-import 'package:chat_app/profile_screen.dart';
+import 'package:chat_app/screens/chat_screen.dart';
+import 'package:chat_app/resources/colors.dart';
+import 'package:chat_app/screens/create_group_screen.dart';
+import 'package:chat_app/models/group.dart';
+import 'package:chat_app/screens/profile_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

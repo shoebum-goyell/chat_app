@@ -1,9 +1,6 @@
-import 'package:chat_app/colors.dart';
-import 'package:chat_app/login_screen.dart';
-import 'package:chat_app/models.dart';
+import 'package:chat_app/resources/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 
 class GroupDetailsScreen extends StatefulWidget {
@@ -34,7 +31,7 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> {
         backgroundColor: kColorDark,
         title: Text(
           widget.groupName! + " Info",
-          style: TextStyle(color: kColorAppBarFont),
+          style: TextStyle(color: kColorLight),
         ),
         centerTitle: true,
       ),
@@ -70,7 +67,7 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> {
           child: RichText(
               text: TextSpan(
                   text: users[i].substring(0, users[i].length-4),
-                  style: TextStyle(color: kColorAppBarFont, fontSize: 20),
+                  style: TextStyle(color: kColorLight, fontSize: 20),
                   children: [
                     TextSpan(text: "#" + users[i].substring(users[i].length-4,users[i].length), style: TextStyle(color: Colors.grey))
                   ]
