@@ -3,6 +3,11 @@
 ChatApp! is a cross platform application made with flutter. Users can create new accounts, login, create groups, and text everyone in those groups.
 This app was created for the Round 3 of CRUx Inductions.
 
+Dependensies used: 
+cloud_firestore: ^3.4.6
+firebase_auth: ^3.7.0
+google_fonts: ^3.0.1
+
 
 <img width="309" alt="Screenshot 2022-09-30 at 7 39 48 PM" src="https://user-images.githubusercontent.com/111908319/193288882-b19e713c-07f2-4f83-adf2-d43fc33370e1.png">
 <img width="300" alt="Screenshot 2022-09-30 at 7 42 26 PM" src="https://user-images.githubusercontent.com/111908319/193288971-32293ac7-9dda-4d63-b9c1-5dafdb720914.png">
