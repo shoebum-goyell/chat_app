@@ -26,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Container(
-            height: 400,
+            height: 550,
             padding: const EdgeInsets.symmetric(horizontal: 20),
             decoration: BoxDecoration(
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -34,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("ChatApp!", style: kFontStyleHeadingLarge),
+                Text("ChatApp!", style: kFontStyleHeadingMedium),
                 const SizedBox(
                   height: 30,
                 ),

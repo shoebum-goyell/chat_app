@@ -1,4 +1,5 @@
 import 'package:chat_app/resources/colors.dart';
+import 'package:chat_app/resources/styles.dart';
 import 'package:chat_app/screens/group_details_screen.dart';
 import 'package:chat_app/models/message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -181,30 +182,23 @@ class _ChatScreenState extends State<ChatScreen> {
                     children: [
                       Container(
                         child: texts[i].senderId != widget.uid ? Text(texts[i].username,
-                            style: GoogleFonts.lexendDeca(
-                                textStyle: TextStyle(color: kColorLight))): Container(),
+                            style: kFontStyleChat): Container(),
                       ),
                       texts[i].text.length > 40
                           ? Container(
                               width: 230,
                               child: Text(texts[i].text,
-                                  style: GoogleFonts.lexendDeca(
-                                      textStyle:
-                                          TextStyle(color: kColorLight, fontSize: 16))),
+                                  style: kFontStyleChat),
                             )
                           : texts[i].text.length < 15
                               ? Container(
                                   width: 120,
                                   child: Text(texts[i].text,
-                                      style: GoogleFonts.lexendDeca(
-                                          textStyle: TextStyle(
-                                              color: kColorLight, fontSize: 16))),
+                                      style: kFontStyleChat),
                                 )
                               : Container(
                                   child: Text(texts[i].text,
-                                      style: GoogleFonts.lexendDeca(
-                                          textStyle: TextStyle(
-                                              color: kColorLight, fontSize: 16))),
+                                      style: kFontStyleChat),
                                 ),
                     ],
                   )),
